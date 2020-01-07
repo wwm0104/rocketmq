@@ -137,6 +137,7 @@ public class NamesrvStartup {
             throw new IllegalArgumentException("NamesrvController is null");
         }
 
+        //初始化namesrv
         boolean initResult = controller.initialize();
         if (!initResult) {
             controller.shutdown();
