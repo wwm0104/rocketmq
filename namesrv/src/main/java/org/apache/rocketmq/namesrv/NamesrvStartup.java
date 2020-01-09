@@ -123,6 +123,7 @@ public class NamesrvStartup {
         MixAll.printObjectProperties(log, namesrvConfig);
         MixAll.printObjectProperties(log, nettyServerConfig);
 
+        //创建namesrv对象,包含了一些基本参数的设置
         final NamesrvController controller = new NamesrvController(namesrvConfig, nettyServerConfig);
 
         // remember all configs to prevent discard
@@ -144,6 +145,7 @@ public class NamesrvStartup {
             System.exit(-3);
         }
 
+        //JVM关闭之前,执行该逻辑
         Runtime.getRuntime().addShutdownHook(new ShutdownHookThread(log, new Callable<Void>() {
             @Override
             public Void call() throws Exception {

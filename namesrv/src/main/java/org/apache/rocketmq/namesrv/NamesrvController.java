@@ -67,6 +67,7 @@ public class NamesrvController {
         this.kvConfigManager = new KVConfigManager(this);
         //路由信息的配置
         this.routeInfoManager = new RouteInfoManager();
+        //监听broker下线信息,并通过RouteInfoManager中的方法移除内存中的broker信息
         this.brokerHousekeepingService = new BrokerHousekeepingService(this);
         this.configuration = new Configuration(
             log,
@@ -75,6 +76,15 @@ public class NamesrvController {
         this.configuration.setStorePathFromConfig(this.namesrvConfig, "configStorePath");
     }
 
+    /***
+     * 启动的时候,初始化各种流程
+     * 1.获取对应的KV配置
+     * 2.初始化netty服务端
+     * 3.注册request处理请求器
+     * 4.每隔10分钟扫描一下不在存活的broker并剔除不存活的机器
+     * 5.每隔十分钟打印配置信息
+     * @return
+     */
     public boolean initialize() {
 
         this.kvConfigManager.load();
