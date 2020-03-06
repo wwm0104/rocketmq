@@ -1126,6 +1126,14 @@ public class DefaultMessageStore implements MessageStore {
         return null;
     }
 
+    /**
+     * queueId 就是 Prouder传过来的，那么这个地方就是topicConfig 中readQueueNums 与 writeQueueNums 最终建立起来的联系
+     * topicConfig  ->queueData -> 该处   这就是建立关联的路径
+     * ConsumeQueue 连接消费者
+     * @param topic
+     * @param queueId
+     * @return
+     */
     public ConsumeQueue findConsumeQueue(String topic, int queueId) {
         ConcurrentMap<Integer, ConsumeQueue> map = consumeQueueTable.get(topic);
         if (null == map) {
