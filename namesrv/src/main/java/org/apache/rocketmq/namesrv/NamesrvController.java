@@ -90,13 +90,13 @@ public class NamesrvController {
         this.kvConfigManager.load();
         //初始化netty服务端
         this.remotingServer = new NettyRemotingServer(this.nettyServerConfig, this.brokerHousekeepingService);
-
+        //业务线程池
         this.remotingExecutor =
             Executors.newFixedThreadPool(nettyServerConfig.getServerWorkerThreads(), new ThreadFactoryImpl("RemotingExecutorThread_"));
 
-        //注册默认处理器
+        //注册默认处理器并将业务线程池与处理器相绑定
         this.registerProcessor();
-        //每隔10分钟扫描一下不在存活的broker并剔除不存活的机器
+        //每隔10s扫描一下不在存活的broker并剔除不存活的机器
         this.scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
 
             @Override
